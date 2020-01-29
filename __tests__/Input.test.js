@@ -1,6 +1,6 @@
 import { shallow } from "enzyme";
 import { findByTestAttribute, storeFactory } from "./utils";
-import Input from "../components/Input";
+import Input, { UnConnectedInput } from "../components/Input";
 
 /**
  * Factory function to create a redux connected ShallowWrapper
@@ -58,4 +58,43 @@ describe("Input render", () => {
   });
 });
 
-describe("Input update state", () => {});
+describe("redux props", () => {
+  test("has success state as props", () => {
+    const success = true;
+    const wrapper = setup({ success });
+    const successProp = wrapper.instance().props.success;
+    expect(successProp).toBe(success);
+  });
+  test("guessWord action creator is a prop", () => {
+    const wrapper = setup();
+    const guessWordProp = wrapper.instance().props.guessWord;
+    expect(guessWordProp).toBeInstanceOf(Function);
+  });
+});
+describe("guessWord action creator call", () => {
+  let guessWordMock;
+  let wrapper;
+  let props;
+  const guessedWord = "train";
+  beforeEach(() => {
+    guessWordMock = jest.fn();
+    props = {
+      guessWord: guessWordMock,
+      success: false
+    };
+    wrapper = shallow(<UnConnectedInput {...props} />);
+    // add value to input box
+    wrapper.setState({ currentGuess: guessedWord });
+    const button = findByTestAttribute(wrapper, "submit-button");
+    button.simulate("click", { preventDefault() {} });
+  });
+  test("guessWord is called on submit button click", () => {
+    expect(guessWordMock).toHaveBeenCalled();
+  });
+  test("guessWord is called with input value state", () => {
+    expect(guessWordMock).toHaveBeenCalledWith(guessedWord);
+  });
+  test("clicking submit clears input", () => {
+    expect(wrapper.state("currentGuess")).toBe("");
+  });
+});

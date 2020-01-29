@@ -9,25 +9,11 @@ exports[`Index Page matches the snapshot 1`] = `
     Jotto
   </h1>
   <Congrats
-    success={true}
+    success={false}
   />
+  <Connect(UnConnectedInput) />
   <GuessedWords
-    guessedWords={
-      Array [
-        Object {
-          "guessedWord": "train",
-          "letterMatchCount": 3,
-        },
-        Object {
-          "guessedWord": "agile",
-          "letterMatchCount": 1,
-        },
-        Object {
-          "guessedWord": "party",
-          "letterMatchCount": 5,
-        },
-      ]
-    }
+    guessedWords={Array []}
   />
 </div>
 `;
